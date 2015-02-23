@@ -1,0 +1,10 @@
+Mole pop up and down frame info.
+
+Each frame is 170x168 px
+
+- sprite-Mole-Pop-Frame-01 (0,0)
+- sprite-Mole-Pop-Frame-02 (0,1)
+- sprite-Mole-Pop-Frame-03 (0,2)
+- sprite-Mole-Pop-Frame-04 (0,3)
+- sprite-Mole-Pop-Frame-05 (0,4)
+- sprite-Mole-Pop-Frame-06 (0,5)

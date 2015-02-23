@@ -1,0 +1,11 @@
+Idle frame information
+
+Each frame is 170x168 px
+
+- sprite-idle-frame-01 (0,0)
+- sprite-idle-frame-02 (0,1)
+- sprite-idle-frame-03 (0,2)
+- sprite-idle-frame-04 (0,3)
+- sprite-idle-frame-05 (0,4)
+- sprite-idle-frame-06 (0,5)
+- sprite-idle-frame-07 (0,6)

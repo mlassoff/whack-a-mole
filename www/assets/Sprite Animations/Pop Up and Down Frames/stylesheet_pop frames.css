@@ -1,0 +1,41 @@
+.sprite {
+    background-image: url(spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-Mole-Pop-Frame-01 {
+    width: 170px;
+    height: 168px;
+    background-position: 0 0;
+}
+
+.sprite-Mole-Pop-Frame-02 {
+    width: 170px;
+    height: 168px;
+    background-position: -170px 0;
+}
+
+.sprite-Mole-Pop-Frame-03 {
+    width: 170px;
+    height: 168px;
+    background-position: -340px 0;
+}
+
+.sprite-Mole-Pop-Frame-04 {
+    width: 170px;
+    height: 168px;
+    background-position: -510px 0;
+}
+
+.sprite-Mole-Pop-Frame-05 {
+    width: 170px;
+    height: 168px;
+    background-position: -680px 0;
+}
+
+.sprite-Mole-Pop-Frame-06 {
+    width: 170px;
+    height: 168px;
+    background-position: -850px 0;
+}

@@ -1,0 +1,17 @@
+Mole laughing tease frames.
+
+Each frame is 170x168 px
+
+- sprite-laughing-frame-01 (0,0)
+- sprite-laughing-frame-02 (0,1)
+- sprite-laughing-frame-03 (0,2)
+- sprite-laughing-frame-04 (0,3)
+- sprite-laughing-frame-05 (0,4)
+- sprite-laughing-frame-06 (0,5)
+- sprite-laughing-frame-07 (0,6)
+- sprite-laughing-frame-08 (0,7)
+- sprite-laughing-frame-09 (0,8)
+- sprite-laughing-frame-10 (0,9)
+- sprite-laughing-frame-11 (0,10)
+- sprite-laughing-frame-12 (0,11)
+- sprite-laughing-frame-13 (0,12)

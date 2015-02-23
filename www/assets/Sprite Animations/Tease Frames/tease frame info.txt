@@ -1,0 +1,17 @@
+tease frame information
+
+Each frame is 170x168 px
+
+- sprite-Tease-Frame-01 (0,0)
+- sprite-Tease-Frame-02 (0,1)
+- sprite-Tease-Frame-03 (0,2)
+- sprite-Tease-Frame-04 (0,3)
+- sprite-Tease-Frame-05 (0,4)
+- sprite-Tease-Frame-06 (0,5)
+- sprite-Tease-Frame-07 (0,6)
+- sprite-Tease-Frame-08 (0,7)
+- sprite-Tease-Frame-09 (0,8)
+- sprite-Tease-Frame-10 (0,9)
+- sprite-Tease-Frame-11 (0,10)
+- sprite-Tease-Frame-12 (0,11)
+- sprite-Tease-Frame-13 (0,12)

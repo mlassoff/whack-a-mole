@@ -1,0 +1,11 @@
+Hit frame information
+
+Each frame is 170x168 px
+
+- sprite-Hit-Frame-01 (0,0)
+- sprite-Hit-Frame-02 (0,1)
+- sprite-Hit-Frame-03 (0,2)
+- sprite-Hit-Frame-04 (0,3)
+- sprite-Hit-Frame-05 (0,4)
+- sprite-Hit-Frame-06 (0,5)
+- sprite-Hit-Frame-07 (0,6)

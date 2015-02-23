@@ -1,0 +1,83 @@
+.sprite {
+    background-image: url(spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-laughing-frame-01 {
+    width: 170px;
+    height: 168px;
+    background-position: 0 0;
+}
+
+.sprite-laughing-frame-02 {
+    width: 170px;
+    height: 168px;
+    background-position: -170px 0;
+}
+
+.sprite-laughing-frame-03 {
+    width: 170px;
+    height: 168px;
+    background-position: -340px 0;
+}
+
+.sprite-laughing-frame-04 {
+    width: 170px;
+    height: 168px;
+    background-position: -510px 0;
+}
+
+.sprite-laughing-frame-05 {
+    width: 170px;
+    height: 168px;
+    background-position: -680px 0;
+}
+
+.sprite-laughing-frame-06 {
+    width: 170px;
+    height: 168px;
+    background-position: -850px 0;
+}
+
+.sprite-laughing-frame-07 {
+    width: 170px;
+    height: 168px;
+    background-position: -1020px 0;
+}
+
+.sprite-laughing-frame-08 {
+    width: 170px;
+    height: 168px;
+    background-position: -1190px 0;
+}
+
+.sprite-laughing-frame-09 {
+    width: 170px;
+    height: 168px;
+    background-position: -1360px 0;
+}
+
+.sprite-laughing-frame-10 {
+    width: 170px;
+    height: 168px;
+    background-position: -1530px 0;
+}
+
+.sprite-laughing-frame-11 {
+    width: 170px;
+    height: 168px;
+    background-position: -1700px 0;
+}
+
+.sprite-laughing-frame-12 {
+    width: 170px;
+    height: 168px;
+    background-position: -1870px 0;
+}
+
+.sprite-laughing-frame-13 {
+    width: 170px;
+    height: 168px;
+    background-position: -2040px 0;
+}
