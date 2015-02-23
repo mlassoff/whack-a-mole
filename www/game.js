@@ -30,7 +30,11 @@ function preloadAssets()
         {id: "bt_flowerRock", src:"assets/backgroundTiles/bt_flowerRock.png"},
         {id: "bt_rock", src:"assets/backgroundTiles/bt_rock.png"},
         {id: "bt_flowers", src:"assets/backgroundTiles/bt_flowers.png"},
-        {id: "snd_welcome", src:"assets/sounds/welcome.mp3"}
+        {id: "snd_welcome", src:"assets/sounds/welcome.mp3"},
+        {id: "snd_level1Background", src:"assets/sounds/circus1.mp3"},
+        {id: "snd_level2Background", src:"assets/sounds/circus2.mp3"},
+        {id: "snd_level3Background", src:"assets/sounds/circus3.mp3"}
+
     ]);
 }
 
@@ -59,13 +63,24 @@ function loadLevel(level)
     //Display Level Screen
     display.stage.removeAllChildren();
     display.stage.update();
-    var level = "ls_level" + level;
-    var level_screen = display.queue.getResult(level);
+    var levelLabel = "ls_level" + level;
+    var level_screen = display.queue.getResult(levelLabel);
     display.stage.addChild(new createjs.Bitmap(level_screen));
     display.stage.update();
     
+    //Play Level Music
+    var music = "snd_level" + level + "Background";
+    console.log(music);
+    createjs.Sound.play(music);
     
+    //Wait for click to start play
+    display.stage.addEventListener("click", function(event) { startLevel(level); })
 
+}
+
+function startLevel(level)
+{
+    alert(level);   
 }
 
 function setupCanvas()
