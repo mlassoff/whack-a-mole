@@ -19,6 +19,7 @@ function preloadAssets()
     display.queue.installPlugin(createjs.Sound);
     display.queue.on("complete" , assetsLoaded, this);
     display.queue.loadManifest([
+        {id: "ls_title", src:"assets/loadingScreens/ls_title.jpg"},
         {id: "ls_credit", src:"assets/loadingScreens/ls_credit.jpg"},
         {id: "ls_gameOver", src:"assets/loadingScreens/ls_gameOver.jpg"},
         {id: "ls_level1", src:"assets/loadingScreens/ls_level1.jpg"},
@@ -41,7 +42,7 @@ function preloadAssets()
 function assetsLoaded()
 {
     //Display the Level1 Screen
-    var background = display.queue.getResult("ls_credit");
+    var background = display.queue.getResult("ls_title");
     display.stage.addChild(new createjs.Bitmap(background));
     display.stage.update();
     
@@ -70,7 +71,6 @@ function loadLevel(level)
     
     //Play Level Music
     var music = "snd_level" + level + "Background";
-    console.log(music);
     createjs.Sound.play(music);
     
     //Wait for click to start play
@@ -80,8 +80,56 @@ function loadLevel(level)
 
 function startLevel(level)
 {
-    alert(level);   
+    //Remove Level Screen
+    display.stage.removeAllChildren();
+    
+    var levelGrid = createLevelGrid(constant.COLUMNS, constant.ROWS);
+    console.log(levelGrid);
+    //displayLevelGrid(levelGrid);
 }
+
+function displayLevelGrid(levelGrid)
+{
+       
+}
+
+function createLevelGrid(colsNumber, rowsNumber)
+{
+    var levelGrid= new Array();
+    
+    //Each Row   
+    for(var x=0; x < rowsNumber; x++)
+       {
+           var row = new Array();
+           //Each column in that row 
+           for(var y = 0; y < colsNumber; y++)
+            {
+                var tileType = Math.floor((Math.random() * 4) + 0);
+                
+                //Associate Graphic with numerical tileType
+                if(tileType ==0)
+                {
+                    tileType = "bt_grass";    
+                } else if (tileType ==1)
+                {
+                    tileType = "bt_hole";   
+                } else if (tileType ==2)
+                {
+                    tileType = "bt_flowerRock";
+                } else if (tileType ==3)
+                {
+                    tileType = "bt_rock";  
+                } else
+                {
+                    tileType = "bt_flowers";   
+                }
+                row[y] = tileType;
+            }
+            levelGrid[x] = row;
+       }
+    return levelGrid;
+}
+
 
 function setupCanvas()
 {
