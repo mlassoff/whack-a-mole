@@ -34,7 +34,12 @@ function preloadAssets()
         {id: "snd_welcome", src:"assets/sounds/welcome.mp3"},
         {id: "snd_level1Background", src:"assets/sounds/circus1.mp3"},
         {id: "snd_level2Background", src:"assets/sounds/circus2.mp3"},
-        {id: "snd_level3Background", src:"assets/sounds/circus3.mp3"}
+        {id: "snd_level3Background", src:"assets/sounds/circus3.mp3"},
+        {id: "ss_hit", src:"assets/spriteAnimations/spritesheet_hit.png"},
+        {id: "ss_idle", src:"assets/spriteAnimations/spritesheet_idle.png"},
+        {id: "ss_laughing", src:"assets/spriteAnimations/spritesheet_laughing.png"},
+        {id: "ss_pop", src:"assets/spriteAnimations/spritesheet_pop.png"},
+        {id: "ss_tease", src:"assets/spriteAnimations/spritesheet_tease.png"}
 
     ]);
 }
