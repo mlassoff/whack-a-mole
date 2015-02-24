@@ -35,6 +35,7 @@ function preloadAssets()
         {id: "snd_level1Background", src:"assets/sounds/circus1.mp3"},
         {id: "snd_level2Background", src:"assets/sounds/circus2.mp3"},
         {id: "snd_level3Background", src:"assets/sounds/circus3.mp3"},
+        {id: "snd_laugh", src:"assets/sounds/laugh.mp3"},
         {id: "ss_hit", src:"assets/spriteAnimations/spritesheet_hit.png"},
         {id: "ss_idle", src:"assets/spriteAnimations/spritesheet_idle.png"},
         {id: "ss_laughing", src:"assets/spriteAnimations/spritesheet_laughing.png"},
@@ -51,11 +52,68 @@ function assetsLoaded()
     display.stage.addChild(new createjs.Bitmap(background));
     display.stage.update();
     
+    //Reister Sprite Sheets
+    registerSpriteSheets();
+    
     //click to start the game
     display.stage.addEventListener("click", function(event) { loadLevel(1); })
     
     //Play welcome music
     createjs.Sound.play("snd_welcome");
+}
+
+function registerSpriteSheets()
+{
+    //Hit Spritesheet
+    var data = {
+        images: [display.queue.getResult("ss_hit")],
+        frames: {width:170, height: 168},
+        animations: { hit: [0,6] }
+    };
+    
+    var hitSpriteSheet = new createjs.SpriteSheet(data);
+    display.hitAnimation = new createjs.Sprite(hitSpriteSheet, "hit");
+    
+    //Idle Spritesheet
+    var data = {
+        images: [display.queue.getResult("ss_laughing")],
+        frames: {width:170, height: 168},
+        animations: { idle: [0,6] }
+    };
+    
+    var idleSpriteSheet = new createjs.SpriteSheet(data);
+    display.idleAnimation = new createjs.Sprite(idleSpriteSheet, "idle");
+    
+    //Laughing Spritesheet
+    var data = {
+        images: [display.queue.getResult("ss_laughing")],
+        frames: {width:170, height: 168},
+        animations: { hit: [0,13] }
+    };
+    
+    var laughingSpriteSheet = new createjs.SpriteSheet(data);
+    display.laughingAnimation = new createjs.Sprite(laughingSpriteSheet, "laugh");
+    
+    //Pop Animation
+    var data = {
+        images: [display.queue.getResult("ss_pop")],
+        frames: {width:170, height: 168},
+        animations: { hit: [0,6] }
+    };
+    
+    var popSpriteSheet = new createjs.SpriteSheet(data);
+    display.popAnimation = new createjs.Sprite(popSpriteSheet, "pop");
+    
+    //Tease Animation
+    var data = {
+        images: [display.queue.getResult("ss_tease")],
+        frames: {width:170, height: 168},
+        animations: { hit: [0,13] }
+    };
+    
+    var teaseSpriteSheet = new createjs.SpriteSheet(data);
+    display.teaseAnimation = new createjs.Sprite(teaseSpriteSheet, "tease");
+        
 }
 
 function loadLevel(level)
@@ -88,9 +146,27 @@ function startLevel(level)
     //Remove Level Screen
     display.stage.removeAllChildren();
     display.stage.removeAllEventListeners();
+    
+    //Display the Level Grid
     var levelGrid = createLevelGrid(constant.COLUMNS, constant.ROWS);
-    //console.log(levelGrid);
     displayLevelGrid(levelGrid, constant.COLUMNS, constant.ROWS);
+    
+    //start ticker
+    createjs.Ticker.setFPS(15);
+    createjs.Ticker.addEventListener('tick', display.stage);
+    
+    //tease
+    createjs.Sound.play("snd_laugh");
+    display.laughingAnimation.x = (constant.WIDTH - constant.TILEWIDTH/2) /2;
+    display.laughingAnimation.y = (constant.HEIGHT - constant.TILEHEIGHT/2) /2;
+    display.laughingAnimation.play();
+    display.stage.addChild(display.laughingAnimation);
+    display.stage.update();
+}
+
+function tease()
+{
+       
 }
 
 function displayLevelGrid(levelGrid, colsNumber, rowsNumber)
