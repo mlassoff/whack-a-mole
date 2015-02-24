@@ -82,15 +82,39 @@ function startLevel(level)
 {
     //Remove Level Screen
     display.stage.removeAllChildren();
-    
+    display.stage.removeAllEventListeners();
     var levelGrid = createLevelGrid(constant.COLUMNS, constant.ROWS);
-    console.log(levelGrid);
-    //displayLevelGrid(levelGrid);
+    //console.log(levelGrid);
+    displayLevelGrid(levelGrid, constant.COLUMNS, constant.ROWS);
 }
 
-function displayLevelGrid(levelGrid)
+function displayLevelGrid(levelGrid, colsNumber, rowsNumber)
 {
-       
+    //Where will the tile be positioned?
+    var xPos=0;
+    var yPos=0;
+    
+    for(var x = 0; x < rowsNumber; x++)
+    {
+        xPos = 0;
+        for(var y =0; y < colsNumber; y++)
+        {
+            var tile = display.queue.getResult(levelGrid[x][y]);
+            
+            //Display the tile in the correct position
+            var bitmap = new createjs.Bitmap(tile);
+            bitmap.x = xPos;
+            bitmap.y = yPos;
+            display.stage.addChild(bitmap);
+            
+            //Position for next tile on the X-axis
+            xPos += constant.TILEWIDTH;
+        }
+        
+        //Position for the next tile on the Y-axis
+        yPos += constant.TILEHEIGHT; 
+    }
+    display.stage.update();   
 }
 
 function createLevelGrid(colsNumber, rowsNumber)
