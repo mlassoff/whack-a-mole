@@ -56,7 +56,7 @@ function assetsLoaded()
     registerSpriteSheets();
     
     //click to start the game
-    display.stage.addEventListener("click", function(event) { loadLevel(1); })
+    display.stage.addEventListener("click", function(event) { loadLevel(); })
     
     //Play welcome music
     createjs.Sound.play("snd_welcome");
@@ -116,7 +116,7 @@ function registerSpriteSheets()
         
 }
 
-function loadLevel(level)
+function loadLevel()
 {
     //Stop Sounds
     createjs.Sound.stop();
@@ -127,21 +127,21 @@ function loadLevel(level)
     //Display Level Screen
     display.stage.removeAllChildren();
     display.stage.update();
-    var levelLabel = "ls_level" + level;
+    var levelLabel = "ls_level" + globals.level;
     var level_screen = display.queue.getResult(levelLabel);
     display.stage.addChild(new createjs.Bitmap(level_screen));
     display.stage.update();
     
     //Play Level Music
-    var music = "snd_level" + level + "Background";
+    var music = "snd_level" + globals.level + "Background";
     createjs.Sound.play(music);
     
     //Wait for click to start play
-    display.stage.addEventListener("click", function(event) { startLevel(level); })
+    display.stage.addEventListener("click", function(event) { startLevel(); })
 
 }
 
-function startLevel(level)
+function startLevel()
 {
     //Remove Level Screen
     display.stage.removeAllChildren();
@@ -186,7 +186,14 @@ function tease(holePositions)
     display.laughingAnimation.addEventListener("animationend", function(){ 
         display.stage.removeChild(display.laughingAnimation); 
         display.stage.update(); 
+        playGame(holePositions);
     });  
+    
+}
+
+function playGame(holePositions)
+{
+       alert("Let's Play");
 }
 
 function displayLevelGrid(levelGrid, colsNumber, rowsNumber)
