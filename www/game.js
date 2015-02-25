@@ -150,23 +150,43 @@ function startLevel(level)
     //Display the Level Grid
     var levelGrid = createLevelGrid(constant.COLUMNS, constant.ROWS);
     displayLevelGrid(levelGrid, constant.COLUMNS, constant.ROWS);
+    //console.log(levelGrid);
+    
+    //Make a simple array of hole positions
+    var holePositions = new Array();
+    for(x=0; x < levelGrid.length; x++)
+    {
+        for(y=0; y < levelGrid[x].length; y++)
+        {
+            if(levelGrid[x][y] == "bt_hole")
+            {
+                holePositions.push(x);
+                holePositions.push(y);
+            }
+        }
+    }
+    console.log(holePositions);
     
     //start ticker
     createjs.Ticker.setFPS(15);
     createjs.Ticker.addEventListener('tick', display.stage);
     
     //tease
+    tease(holePositions);
+}
+
+function tease(holePositions)
+{
     createjs.Sound.play("snd_laugh");
-    display.laughingAnimation.x = (constant.WIDTH - constant.TILEWIDTH/2) /2;
-    display.laughingAnimation.y = (constant.HEIGHT - constant.TILEHEIGHT/2) /2;
+    display.laughingAnimation.y = holePositions[0] * constant.TILEHEIGHT;
+    display.laughingAnimation.x = holePositions[1] * constant.TILEWIDTH;
     display.laughingAnimation.play();
     display.stage.addChild(display.laughingAnimation);
     display.stage.update();
-}
-
-function tease()
-{
-       
+    display.laughingAnimation.addEventListener("animationend", function(){ 
+        display.stage.removeChild(display.laughingAnimation); 
+        display.stage.update(); 
+    });  
 }
 
 function displayLevelGrid(levelGrid, colsNumber, rowsNumber)
