@@ -76,7 +76,7 @@ function registerSpriteSheets()
     
     //Idle Spritesheet
     var data = {
-        images: [display.queue.getResult("ss_laughing")],
+        images: [display.queue.getResult("ss_idle")],
         frames: {width:170, height: 168},
         animations: { idle: [0,6] } , framerate: 10
     };
@@ -88,7 +88,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_laughing")],
         frames: {width:170, height: 168},
-        animations: { laugh: [0,13] } , framerate: 10
+        animations: { laugh: [0,12] } , framerate: 10
     };
     
     var laughingSpriteSheet = new createjs.SpriteSheet(data);
@@ -98,7 +98,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_pop")],
         frames: {width:170, height: 168},
-        animations: { pop: [0,6] } , framerate: 10
+        animations: { pop: [0,5] } , framerate: 10
     };
     
     var popSpriteSheet = new createjs.SpriteSheet(data);
@@ -134,7 +134,7 @@ function loadLevel()
     
     //Play Level Music
     var music = "snd_level" + globals.level + "Background";
-    createjs.Sound.play(music);
+    createjs.Sound.play(music,{loop:8});
     
     //Wait for click to start play
     display.stage.addEventListener("click", function(event) { startLevel(); })
@@ -181,7 +181,7 @@ function playLoop()
     {   
         globals.gameTime = globals.gameTime + (1/15);
         
-        //console.log(globals.gameTime);
+        console.log(globals.gameTime);
         
         if(globals.gameTime < constant.LEVELTIME)
         {
@@ -224,24 +224,30 @@ function createRandomMole()
     
             var y = globals.holePositions[where];
             var x = globals.holePositions[where+1];
-           // console.log("X: " + x + " Y: " + y);
             
             //Mole pops up
-            display.laughingAnimation.x = x * constant.TILEWIDTH;
-            display.laughingAnimation.y = y * constant.TILEHEIGHT;
-            display.laughingAnimation.play();
-            display.stage.addChild(display.laughingAnimation);
+            display.popAnimation.x = x * constant.TILEWIDTH;
+            display.popAnimation.y = y * constant.TILEHEIGHT;
+            display.popAnimation.play();
+            display.stage.addChild(display.popAnimation);
             display.stage.update();
-           
-//            display.popAnimation.on("animationend", function(){
-//                display.stage.removeChild(display.popAnimation);
-//                mole.y = y;
-//                mole.x = x;
-//                mole.play();
-//                display.stage.addChild(mole);
-//                display.stage.update();
-//                popping = false;
-//            });
+            var playSound = Math.floor((Math.random() * 4) + 0);
+            console.log("playSound: " + playSound);
+            if (playSound ==3) { createjs.Sound.play("snd_laugh"); }
+            display.popAnimation.on("animationend", function(){
+                //which mole
+                var which = Math.floor((Math.random() * 2) + 0);
+                if(which == 0) { var mole = display.laughingAnimation }
+                else if (which ==1 ) {var mole = display.idleAnimation }
+                else {var mole = display.teaseAnimation };
+                
+                display.stage.removeChild(display.popAnimation);
+                mole.y = y * constant.TILEWIDTH;
+                mole.x = x * constant.TILEWIDTH;
+                mole.play();
+                display.stage.addChild(mole);
+                display.stage.update();
+            });
 }
 
 function playGame()
