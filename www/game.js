@@ -262,7 +262,9 @@ function hit(mole)
     display.hitAnimation.y = mole.target.y;
     display.stage.addChild(display.hitAnimation);
     display.stage.update();
+    displayScore();
     display.hitAnimation.on("animationend", function(){
+        display.stage.removeChild(display.hitAnimation);
         display.stage.removeChild(display.hitAnimation);
     });
 }
@@ -271,6 +273,7 @@ function playGame()
 {
     globals.playing = true;
     globals.gameTime = 0;
+    displayScore();
     
 }
 
@@ -303,9 +306,13 @@ function gameOver()
     display.stage.addChild(new createjs.Bitmap(background));
     display.stage.update();
     
+    //Play welcome music
+    createjs.Sound.play("snd_welcome");
+    
     display.stage.addEventListener("click", function() {
         globals.level = 1;
         loadLevel();
+        globals.score = 0;
     
     } );
 }
@@ -336,7 +343,17 @@ function displayLevelGrid(levelGrid, colsNumber, rowsNumber)
         //Position for the next tile on the Y-axis
         yPos += constant.TILEHEIGHT; 
     }
-    display.stage.update();   
+    
+}
+
+function displayScore()
+{
+    display.stage.removeChild(globals.scoreText);
+    globals.scoreText = new createjs.Text("Score: " + globals.score , "30px Arial", "#ffffff");
+    globals.scoreText.y = 10;
+    globals.scoreText.x = 10;
+    display.stage.addChild(globals.scoreText);
+    display.stage.update();      
 }
 
 function createLevelGrid(colsNumber, rowsNumber)
