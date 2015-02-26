@@ -68,7 +68,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_hit")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,6] }
+        animations: { hit: [0,6] } , speed: .25
     };
     
     var hitSpriteSheet = new createjs.SpriteSheet(data);
@@ -78,7 +78,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_laughing")],
         frames: {width:170, height: 168},
-        animations: { idle: [0,6] }
+        animations: { idle: [0,6] } , speed: .25
     };
     
     var idleSpriteSheet = new createjs.SpriteSheet(data);
@@ -88,7 +88,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_laughing")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,13] }
+        animations: { hit: [0,13] } , speed: .25
     };
     
     var laughingSpriteSheet = new createjs.SpriteSheet(data);
@@ -98,7 +98,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_pop")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,6] }
+        animations: { hit: [0,6] } , speed: .25
     };
     
     var popSpriteSheet = new createjs.SpriteSheet(data);
@@ -108,7 +108,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_tease")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,13] }
+        animations: { hit: [0,13] } , speed: .25
     };
     
     var teaseSpriteSheet = new createjs.SpriteSheet(data);
@@ -153,47 +153,142 @@ function startLevel()
     //console.log(levelGrid);
     
     //Make a simple array of hole positions
-    var holePositions = new Array();
+    globals.holePositions = new Array();
     for(x=0; x < levelGrid.length; x++)
     {
         for(y=0; y < levelGrid[x].length; y++)
         {
             if(levelGrid[x][y] == "bt_hole")
             {
-                holePositions.push(x);
-                holePositions.push(y);
+                globals.holePositions.push(x);
+                globals.holePositions.push(y);
             }
         }
     }
-    console.log(holePositions);
-    
+       
     //start ticker
     createjs.Ticker.setFPS(15);
     createjs.Ticker.addEventListener('tick', display.stage);
+    createjs.Ticker.addEventListener('tick', playLoop);
     
     //tease
-    tease(holePositions);
+    tease(globals.holePositions);
 }
 
-function tease(holePositions)
+function tease()
 {
     createjs.Sound.play("snd_laugh");
-    display.laughingAnimation.y = holePositions[0] * constant.TILEHEIGHT;
-    display.laughingAnimation.x = holePositions[1] * constant.TILEWIDTH;
+    display.laughingAnimation.y = globals.holePositions[0] * constant.TILEHEIGHT;
+    display.laughingAnimation.x = globals.holePositions[1] * constant.TILEWIDTH;
     display.laughingAnimation.play();
     display.stage.addChild(display.laughingAnimation);
     display.stage.update();
     display.laughingAnimation.addEventListener("animationend", function(){ 
         display.stage.removeChild(display.laughingAnimation); 
         display.stage.update(); 
-        playGame(holePositions);
+        playGame(globals.holePositions);
     });  
     
 }
 
-function playGame(holePositions)
+function playLoop()
 {
-       alert("Let's Play");
+    
+    if(globals.playing)
+    {   
+        globals.gameTime = globals.gameTime + (1/15);
+        console.log(globals.gameTime);
+       // console.log(globals.gameTime);
+        if(globals.gameTime < constant.LEVELTIME)
+        {
+            //How Hard will the level be?
+            if(globals.level == 1)
+            {
+                var frequency = constant.LEVEL1FREQUENCY;   
+            } else if (globals.level == 2)
+            {
+                var frequency =  constant.LEVEL2FREQUENCY;
+            } else
+            {
+                var frequency = constant.LEVEL3FREQUENCY;
+            }
+            //If the numbers match-- create a mole
+            var match = Math.floor((Math.random() * frequency) + 0);
+            if(match == 1)
+            {
+                createRandomMole();   
+            }
+            
+        } else
+            
+        {
+            globals.playing = false;
+            endLevel();
+        }
+    }
+}
+
+function createRandomMole()
+{
+            var numHoles = globals.holePositions.length/2;
+           var where = Math.floor((Math.random() * numHoles) + 0);     //Where will the mole appear?
+            if(where % 2 != 0)
+            {
+                where--;   
+            }
+            var y = globals.holePositions[where];
+            var x = globals.holePositions[where+1];
+            
+            //Which Mole?
+            var which = Math.floor((Math.random() * 2) + 0);
+            var mole = "";
+            
+            if(which == 0)
+            {
+                mole=display.teaseAnimation;
+            } else if(which==1)
+            {
+                mole=display.laughingAnimation;
+            } else if(which==2)
+            {
+                mole=display.idleAnimation;   
+            }
+            x = x * constant.TILEWIDTH;
+            y = y * constant.TILEHEIGHT;
+           
+            //Mole pops up
+            display.popAnimation.x = x;
+            display.popAnimation.y = y;
+            display.popAnimation.play();
+            display.stage.addChild(display.popAnimation);
+            display.stage.update();
+           
+//            display.popAnimation.addEventListener("animationend", function(){
+//                display.stage.removeChild(display.popAnimation);
+//                mole.y = y;
+//                mole.x = x;
+//                mole.play();
+//                display.stage.addChild(mole);
+//                display.stage.update();
+//                popping = false;
+//            });
+}
+
+function playGame()
+{
+    globals.playing = true;
+    globals.gameTime = 0;
+    
+}
+
+function endLevel()
+{
+    clearInterval(globals.gameIntv);
+    if(globals.level < 3)
+    {
+        globals.level++;
+        loadLevel();
+    }
 }
 
 function displayLevelGrid(levelGrid, colsNumber, rowsNumber)
