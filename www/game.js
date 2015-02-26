@@ -68,7 +68,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_hit")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,6] } , speed: .25
+        animations: { hit: [0,6] } , framerate: 10
     };
     
     var hitSpriteSheet = new createjs.SpriteSheet(data);
@@ -78,7 +78,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_laughing")],
         frames: {width:170, height: 168},
-        animations: { idle: [0,6] } , speed: .25
+        animations: { idle: [0,6] } , framerate: 10
     };
     
     var idleSpriteSheet = new createjs.SpriteSheet(data);
@@ -88,7 +88,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_laughing")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,13] } , speed: .25
+        animations: { laugh: [0,13] } , framerate: 10
     };
     
     var laughingSpriteSheet = new createjs.SpriteSheet(data);
@@ -98,7 +98,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_pop")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,6] } , speed: .25
+        animations: { pop: [0,6] } , framerate: 10
     };
     
     var popSpriteSheet = new createjs.SpriteSheet(data);
@@ -108,7 +108,7 @@ function registerSpriteSheets()
     var data = {
         images: [display.queue.getResult("ss_tease")],
         frames: {width:170, height: 168},
-        animations: { hit: [0,13] } , speed: .25
+        animations: { tease: [0,13] } , framerate: 10
     };
     
     var teaseSpriteSheet = new createjs.SpriteSheet(data);
@@ -150,7 +150,6 @@ function startLevel()
     //Display the Level Grid
     var levelGrid = createLevelGrid(constant.COLUMNS, constant.ROWS);
     displayLevelGrid(levelGrid, constant.COLUMNS, constant.ROWS);
-    //console.log(levelGrid);
     
     //Make a simple array of hole positions
     globals.holePositions = new Array();
@@ -170,26 +169,10 @@ function startLevel()
     createjs.Ticker.setFPS(15);
     createjs.Ticker.addEventListener('tick', display.stage);
     createjs.Ticker.addEventListener('tick', playLoop);
-    
-    //tease
-    tease(globals.holePositions);
+    globals.playing = true;
+    playGame(globals.holePositions);
 }
 
-function tease()
-{
-    createjs.Sound.play("snd_laugh");
-    display.laughingAnimation.y = globals.holePositions[0] * constant.TILEHEIGHT;
-    display.laughingAnimation.x = globals.holePositions[1] * constant.TILEWIDTH;
-    display.laughingAnimation.play();
-    display.stage.addChild(display.laughingAnimation);
-    display.stage.update();
-    display.laughingAnimation.addEventListener("animationend", function(){ 
-        display.stage.removeChild(display.laughingAnimation); 
-        display.stage.update(); 
-        playGame(globals.holePositions);
-    });  
-    
-}
 
 function playLoop()
 {
@@ -197,8 +180,9 @@ function playLoop()
     if(globals.playing)
     {   
         globals.gameTime = globals.gameTime + (1/15);
-        console.log(globals.gameTime);
-       // console.log(globals.gameTime);
+        
+        //console.log(globals.gameTime);
+        
         if(globals.gameTime < constant.LEVELTIME)
         {
             //How Hard will the level be?
@@ -230,40 +214,26 @@ function playLoop()
 
 function createRandomMole()
 {
-            var numHoles = globals.holePositions.length/2;
-           var where = Math.floor((Math.random() * numHoles) + 0);     //Where will the mole appear?
+    console.log(globals.holePositions);
+    var numHoles = globals.holePositions.length/2;
+    var where = Math.floor((Math.random() * globals.holePositions.length) + 0);     //Where will the mole appear?
             if(where % 2 != 0)
             {
                 where--;   
             }
+    
             var y = globals.holePositions[where];
             var x = globals.holePositions[where+1];
+           // console.log("X: " + x + " Y: " + y);
             
-            //Which Mole?
-            var which = Math.floor((Math.random() * 2) + 0);
-            var mole = "";
-            
-            if(which == 0)
-            {
-                mole=display.teaseAnimation;
-            } else if(which==1)
-            {
-                mole=display.laughingAnimation;
-            } else if(which==2)
-            {
-                mole=display.idleAnimation;   
-            }
-            x = x * constant.TILEWIDTH;
-            y = y * constant.TILEHEIGHT;
-           
             //Mole pops up
-            display.popAnimation.x = x;
-            display.popAnimation.y = y;
-            display.popAnimation.play();
-            display.stage.addChild(display.popAnimation);
+            display.laughingAnimation.x = x * constant.TILEWIDTH;
+            display.laughingAnimation.y = y * constant.TILEHEIGHT;
+            display.laughingAnimation.play();
+            display.stage.addChild(display.laughingAnimation);
             display.stage.update();
            
-//            display.popAnimation.addEventListener("animationend", function(){
+//            display.popAnimation.on("animationend", function(){
 //                display.stage.removeChild(display.popAnimation);
 //                mole.y = y;
 //                mole.x = x;
