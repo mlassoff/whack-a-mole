@@ -32,6 +32,7 @@ function preloadAssets()
         {id: "bt_rock", src:"assets/backgroundTiles/bt_rock.png"},
         {id: "bt_flowers", src:"assets/backgroundTiles/bt_flowers.png"},
         {id: "snd_welcome", src:"assets/sounds/welcome.mp3"},
+        {id: "snd_punch", src:"assets/sounds/punch.mp3"},
         {id: "snd_level1Background", src:"assets/sounds/circus1.mp3"},
         {id: "snd_level2Background", src:"assets/sounds/circus2.mp3"},
         {id: "snd_level3Background", src:"assets/sounds/circus3.mp3"},
@@ -181,7 +182,7 @@ function playLoop()
     {   
         globals.gameTime = globals.gameTime + (1/15);
         
-        console.log(globals.gameTime);
+     //   console.log(globals.gameTime);
         
         if(globals.gameTime < constant.LEVELTIME)
         {
@@ -247,7 +248,23 @@ function createRandomMole()
                 mole.play();
                 display.stage.addChild(mole);
                 display.stage.update();
+                mole.addEventListener("click", hit, false);
             });
+}
+
+function hit(mole)
+{
+    console.log(mole.target);
+    createjs.Sound.play("snd_punch");
+    display.stage.removeChild(mole.target);
+    globals.score = globals.score + 10;
+    display.hitAnimation.x = mole.target.x;
+    display.hitAnimation.y = mole.target.y;
+    display.stage.addChild(display.hitAnimation);
+    display.stage.update();
+    display.hitAnimation.on("animationend", function(){
+        display.stage.removeChild(display.hitAnimation);
+    });
 }
 
 function playGame()
@@ -264,7 +281,33 @@ function endLevel()
     {
         globals.level++;
         loadLevel();
+    } else
+    {
+        gameOver();   
     }
+}
+
+function gameOver()
+{
+    //Stop Sounds
+    createjs.Sound.stop();
+    
+    //Remove Current Click Listener
+    display.stage.removeAllEventListeners();
+    
+    //Display Level Screen
+    display.stage.removeAllChildren();
+    display.stage.update(); 
+    
+    var background = display.queue.getResult("ls_gameOver");
+    display.stage.addChild(new createjs.Bitmap(background));
+    display.stage.update();
+    
+    display.stage.addEventListener("click", function() {
+        globals.level = 1;
+        loadLevel();
+    
+    } );
 }
 
 function displayLevelGrid(levelGrid, colsNumber, rowsNumber)
