@@ -182,8 +182,6 @@ function playLoop()
     {   
         globals.gameTime = globals.gameTime + (1/15);
         
-     //   console.log(globals.gameTime);
-        
         if(globals.gameTime < constant.LEVELTIME)
         {
             //How Hard will the level be?
@@ -215,7 +213,6 @@ function playLoop()
 
 function createRandomMole()
 {
-    console.log(globals.holePositions);
     var numHoles = globals.holePositions.length/2;
     var where = Math.floor((Math.random() * globals.holePositions.length) + 0);     //Where will the mole appear?
             if(where % 2 != 0)
@@ -232,9 +229,12 @@ function createRandomMole()
             display.popAnimation.play();
             display.stage.addChild(display.popAnimation);
             display.stage.update();
+    
+            //Should the mole laugh at the player
             var playSound = Math.floor((Math.random() * 4) + 0);
-            console.log("playSound: " + playSound);
             if (playSound ==3) { createjs.Sound.play("snd_laugh"); }
+            
+            //After the mole pops up run a secondary animation
             display.popAnimation.on("animationend", function(){
                 //which mole
                 var which = Math.floor((Math.random() * 2) + 0);
@@ -242,19 +242,20 @@ function createRandomMole()
                 else if (which ==1 ) {var mole = display.idleAnimation }
                 else {var mole = display.teaseAnimation };
                 
+                //display the mole in the proper location
                 display.stage.removeChild(display.popAnimation);
                 mole.y = y * constant.TILEWIDTH;
                 mole.x = x * constant.TILEWIDTH;
                 mole.play();
                 display.stage.addChild(mole);
                 display.stage.update();
-                mole.addEventListener("click", hit, false);
+                mole.addEventListener("click", hit, false);    //What to do if the mole is "hit"
             });
 }
 
 function hit(mole)
 {
-    console.log(mole.target);
+    //Play a sound, and display the "hit" animation
     createjs.Sound.play("snd_punch");
     display.stage.removeChild(mole.target);
     globals.score = globals.score + 10;
@@ -263,8 +264,9 @@ function hit(mole)
     display.stage.addChild(display.hitAnimation);
     display.stage.update();
     displayScore();
+    
+    //When the animation is done, remove it
     display.hitAnimation.on("animationend", function(){
-        display.stage.removeChild(display.hitAnimation);
         display.stage.removeChild(display.hitAnimation);
     });
 }
